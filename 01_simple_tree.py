@@ -9,7 +9,7 @@ class SimpleTreeNode:
 class SimpleTree:
 
     def __init__(self, root):
-        if root is None or root is SimpleTreeNode:
+        if (root is None) or (type(root) is SimpleTreeNode):
             self.Root = root  # корень, может быть None
         else:
             raise TypeError
@@ -40,7 +40,7 @@ class SimpleTree:
     def GetAllNodes(self):
 
         def appendnodetolist(x, s):
-            s.append(x)
+            s.append(x.NodeValue)
             for children in x.Children:
                 appendnodetolist(children, s)
             return s
@@ -55,7 +55,7 @@ class SimpleTree:
 
     def FindNodesByValue(self, val):
 
-        def findtreenodes(x, neededval, s):                # Воспользуемся рекурсией!
+        def findtreenodes(x, neededval, s):  # Воспользуемся рекурсией!
             if x.NodeValue == neededval:
                 s.append(x)
             for children in x.Children:
@@ -75,6 +75,7 @@ class SimpleTree:
         if x != self.Root:
             y = self.FindNode(NewParent)
             y.Children.append(x)
+            x.Parent.Children.remove(x)
             x.Parent = y
             return
         else:
@@ -84,49 +85,48 @@ class SimpleTree:
 
     def Count(self):
 
-        def counteverynode(x, k):
-            k += 1
-            for children in x.Children:
-                counteverynode(children, k)
-            return k
+        def countnodes(x, k):
+            k.append(None)
+            for child in x.Children:
+                countnodes(child, k)
+            return len(k)
 
         if self.Root is not None:
-            length = 0
-            length = counteverynode(self.Root, length)
-            return length
+            length = []
+            return countnodes(self.Root, length)
         else:
             return 0
         # количество всех узлов в дереве
 
     def LeafCount(self):
-        
+
         def countleaves(x, k):
             if not x.Children:
-                k += 1
+                k.append(None)
             for children in x.Children:
                 countleaves(children, k)
-            return k
-        
+            return len(k)
+
         if self.Root is not None:
-            leaves = 0
-            leaves = countleaves(self.Root, leaves)
-            return leaves
+            leaves = []
+            return countleaves(self.Root, leaves)
         else:
-            return 0        
+            return 0
         # количество листьев в дереве
 
     def FindNode(self, val):
 
-        def findtreenode(x, neededval):                # Воспользуемся рекурсией!
-            if x.NodeValue == neededval:
-                return x
-            else:
-                for children in x.Children:
-                    findtreenode(children, neededval)
-                return
+        def findtreenode(x, nval):
+            lst = [x]
+            while lst:
+                for elem in lst:
+                    if elem.NodeValue == nval:
+                        return elem
+                    else:
+                        lst.extend(elem.Children)
+                    lst.remove(elem)
 
         if self.Root is not None:
-            node = findtreenode(self.Root, val)
-            return node
+            return findtreenode(self.Root, val)
         else:
             return
