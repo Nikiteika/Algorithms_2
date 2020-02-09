@@ -54,30 +54,75 @@ class SimpleTree:
         # ваш код выдачи всех узлов дерева в определённом порядке
 
     def FindNodesByValue(self, val):
+
+        def findtreenodes(x, neededval, s):                # Воспользуемся рекурсией!
+            if x.NodeValue == neededval:
+                s.append(x)
+            for children in x.Children:
+                findtreenodes(children, neededval, s)
+            return s
+
+        if self.Root is not None:
+            lst = []
+            lst = findtreenodes(self.Root, val, lst)
+            return lst
+        else:
+            return []
         # ваш код поиска узлов по значению
-        return []
 
     def MoveNode(self, OriginalNode, NewParent):
+        x = self.FindNode(OriginalNode)
+        if x != self.Root:
+            y = self.FindNode(NewParent)
+            y.Children.append(x)
+            x.Parent = y
+            return
+        else:
+            return
         # ваш код перемещения узла вместе с его поддеревом --
         # в качестве дочернего для узла NewParent
-        pass
 
     def Count(self):
+
+        def counteverynode(x, k):
+            k += 1
+            for children in x.Children:
+                counteverynode(children, k)
+            return k
+
+        if self.Root is not None:
+            length = 0
+            length = counteverynode(self.Root, length)
+            return length
+        else:
+            return 0
         # количество всех узлов в дереве
-        return 0
 
     def LeafCount(self):
+        
+        def countleaves(x, k):
+            if not x.Children:
+                k += 1
+            for children in x.Children:
+                countleaves(children, k)
+            return k
+        
+        if self.Root is not None:
+            leaves = 0
+            leaves = countleaves(self.Root, leaves)
+            return leaves
+        else:
+            return 0        
         # количество листьев в дереве
-        return 0
 
     def FindNode(self, val):
 
-        def findtreenode(x, neededtreenode):                # Воспользуемся рекурсией!
-            if x.NodeValue == neededtreenode:
+        def findtreenode(x, neededval):                # Воспользуемся рекурсией!
+            if x.NodeValue == neededval:
                 return x
             else:
                 for children in x.Children:
-                    findtreenode(children, neededtreenode)
+                    findtreenode(children, neededval)
                 return
 
         if self.Root is not None:
