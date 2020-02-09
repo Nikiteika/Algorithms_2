@@ -40,7 +40,7 @@ class SimpleTree:
     def GetAllNodes(self):
 
         def appendnodetolist(x, s):
-            s.append(x.NodeValue)
+            s.append(x)
             for children in x.Children:
                 appendnodetolist(children, s)
             return s
