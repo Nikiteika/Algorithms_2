@@ -9,10 +9,7 @@ class SimpleTreeNode:
 class SimpleTree:
 
     def __init__(self, root):
-        if (root is None) or (type(root) is SimpleTreeNode):
-            self.Root = root  # корень, может быть None
-        else:
-            raise TypeError
+        self.Root = root  # корень, может быть None
 
     def AddChild(self, ParentNode, NewChild):
         if self.Root is not None:
@@ -116,11 +113,11 @@ class SimpleTree:
 
     def FindNode(self, val):
 
-        def findtreenode(x, nval):
+        def findtreenode(x, needednode):
             lst = [x]
             while lst:
                 for elem in lst:
-                    if elem.NodeValue == nval:
+                    if elem == needednode:
                         return elem
                     else:
                         lst.extend(elem.Children)
