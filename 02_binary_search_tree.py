@@ -18,6 +18,7 @@ class BSTFind:  # промежуточный результат поиска
         # добавить новый узел левым потомком
 
     def do(self, reqkey, elem):  # в параметр "elem" нужно всегда подавать аргумент "self.root" дерева
+        # (если хотим провести поиск по всему дереву)
         while elem is not None:  # проверяем, не пустой ли корень + совершается столько циклов, сколько нужно
             if elem.NodeKey == reqkey:
                 self.Node = elem
@@ -50,11 +51,19 @@ class BST:
 
     def FindNodeByKey(self, key):
         # ищем в дереве узел и сопутствующую информацию по ключу
-        return BSTFind().do(key, self.Root) # возвращает BSTFind (список из трёх значений)
+        return BSTFind().do(key, self.Root)  # возвращает BSTFind (список из трёх значений)
 
     def AddKeyValue(self, key, val):
         # добавляем ключ-значение в дерево
-        return False  # если ключ уже есть
+        nodeinf = self.FindNodeByKey(key)
+        if nodeinf[1] == False:
+            if nodeinf[2] == True:  # Добавляем левым потомком
+                nodeinf[0].LeftChild = BSTNode(key, val, nodeinf[0])
+            else:  # nodeinf[2] == False: Добавляем правым потомком
+                nodeinf[0].RightChild = BSTNode(key, val, nodeinf[0])
+            return True
+        else:
+            return False  # если ключ уже есть
 
     def FinMinMax(self, FromNode, FindMax):
         # ищем максимальное/минимальное (узел) в поддереве
