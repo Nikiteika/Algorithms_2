@@ -55,15 +55,18 @@ class BST:
 
     def AddKeyValue(self, key, val):
         # добавляем ключ-значение в дерево
-        nodeinf = self.FindNodeByKey(key)
-        if nodeinf[1] == False:
-            if nodeinf[2] == True:  # Добавляем левым потомком
-                nodeinf[0].LeftChild = BSTNode(key, val, nodeinf[0])
-            else:  # nodeinf[2] == False: Добавляем правым потомком
-                nodeinf[0].RightChild = BSTNode(key, val, nodeinf[0])
-            return True
+        if self.Root is None:
+            self.Root = BSTNode(key, val, None)
         else:
-            return False  # если ключ уже есть
+            nodeinf = self.FindNodeByKey(key)
+            if nodeinf[1] == False:
+                if nodeinf[2] == True:  # Добавляем левым потомком
+                    nodeinf[0].LeftChild = BSTNode(key, val, nodeinf[0])
+                else:  # nodeinf[2] == False: Добавляем правым потомком
+                    nodeinf[0].RightChild = BSTNode(key, val, nodeinf[0])
+                return True
+            else:
+                return False  # если ключ уже есть
 
     def FinMinMax(self, FromNode, FindMax):
         if FromNode is not None:
@@ -82,8 +85,36 @@ class BST:
         # ищем максимальное/минимальное (узел) в поддереве
 
     def DeleteNodeByKey(self, key):
+        nodeinf = self.FindNodeByKey(key)
+        if nodeinf[1] == True:
+            roditel = nodeinf[0].Parent
+            if nodeinf[0].RightChild is None:
+                preemnik = None
+            else:  # nodeinf[0].RightChild is not None:
+                preemnik = nodeinf[0].RightChild
+                while preemnik.LeftChild is not None:
+                    preemnik = preemnik.LeftChild
+            if roditel.LeftChild.NodeKey == nodeinf[0].NodeKey:
+                roditel.LeftChild = preemnik
+            else:
+                roditel.RightChild = preemnik
+            preemnik.Parent = roditel
+            return True
+        else:
+            return False  # если узел не найден
         # удаляем узел по ключу
-        return False  # если узел не найден
 
     def Count(self):
-        return 0  # количество узлов в дереве
+        spisok = []
+        x = self.Root
+        k = 0
+        if x is not None:
+            spisok.append(x)
+            while spisok:
+                for elem in spisok:
+                    for child in (elem.LeftChild, elem.RightChild):
+                        if child is not None:
+                            spisok.append(child)
+                    spisok.remove(elem)
+                    k += 1
+        return k  # количество узлов в дереве
