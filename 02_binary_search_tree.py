@@ -87,18 +87,21 @@ class BST:
     def DeleteNodeByKey(self, key):
         nodeinf = self.FindNodeByKey(key)
         if nodeinf[1] == True:
-            roditel = nodeinf[0].Parent
-            if nodeinf[0].RightChild is None:
-                preemnik = None
-            else:  # nodeinf[0].RightChild is not None:
-                preemnik = nodeinf[0].RightChild
-                while preemnik.LeftChild is not None:
-                    preemnik = preemnik.LeftChild
-            if roditel.LeftChild.NodeKey == nodeinf[0].NodeKey:
-                roditel.LeftChild = preemnik
+            if nodeinf[0] == self.Root:
+                self.Root = None
             else:
-                roditel.RightChild = preemnik
-            preemnik.Parent = roditel
+                roditel = nodeinf[0].Parent
+                if nodeinf[0].RightChild is None:
+                    preemnik = None
+                else:  # nodeinf[0].RightChild is not None:
+                    preemnik = nodeinf[0].RightChild
+                    while preemnik.LeftChild is not None:
+                        preemnik = preemnik.LeftChild
+                if roditel.LeftChild.NodeKey == nodeinf[0].NodeKey:
+                    roditel.LeftChild = preemnik
+                else:
+                    roditel.RightChild = preemnik
+                preemnik.Parent = roditel
             return True
         else:
             return False  # если узел не найден
