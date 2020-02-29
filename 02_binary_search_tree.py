@@ -55,7 +55,7 @@ class BST:
         if node[1] == True:
             return node[0]
         else:
-            return   # возвращает BSTFind (список из трёх значений)
+            return   # возвращает BSTFind
 
     def AddKeyValue(self, key, val):
         # добавляем ключ-значение в дерево
@@ -81,8 +81,8 @@ class BST:
                 return maks
             else:  # FindMax == False
                 mnml = FromNode
-                while mnml.RightChild is not None:
-                    mnml = mnml.RightChild
+                while mnml.LeftChild is not None:
+                    mnml = mnml.LeftChild
                 return mnml
         else:
             return None
