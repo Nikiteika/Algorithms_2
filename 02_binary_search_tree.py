@@ -51,7 +51,11 @@ class BST:
 
     def FindNodeByKey(self, key):
         # ищем в дереве узел и сопутствующую информацию по ключу
-        return BSTFind().do(key, self.Root)  # возвращает BSTFind (список из трёх значений)
+        node = BSTFind().do(key, self.Root)
+        if node[1] == True:
+            return node[0]
+        else:
+            return   # возвращает BSTFind (список из трёх значений)
 
     def AddKeyValue(self, key, val):
         # добавляем ключ-значение в дерево
@@ -85,10 +89,17 @@ class BST:
         # ищем максимальное/минимальное (узел) в поддереве
 
     def DeleteNodeByKey(self, key):
-        nodeinf = self.FindNodeByKey(key)
+        nodeinf = BSTFind().do(key, self.Root)
         if nodeinf[1] == True:
             if nodeinf[0] == self.Root:
-                self.Root = None
+                if nodeinf[0].RightChild is None:
+                    self.Root = None
+                else:  # nodeinf[0].RightChild is not None:
+                    preemnik = nodeinf[0].RightChild
+                    while preemnik.LeftChild is not None:
+                        preemnik = preemnik.LeftChild
+                    preemnik.Parent = None
+                    self.Root = preemnik
             else:
                 roditel = nodeinf[0].Parent
                 if nodeinf[0].RightChild is None:
@@ -97,11 +108,11 @@ class BST:
                     preemnik = nodeinf[0].RightChild
                     while preemnik.LeftChild is not None:
                         preemnik = preemnik.LeftChild
+                    preemnik.Parent = roditel
                 if roditel.LeftChild.NodeKey == nodeinf[0].NodeKey:
                     roditel.LeftChild = preemnik
                 else:
                     roditel.RightChild = preemnik
-                preemnik.Parent = roditel
             return True
         else:
             return False  # если узел не найден
