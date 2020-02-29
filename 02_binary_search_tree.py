@@ -62,7 +62,7 @@ class BST:
         if self.Root is None:
             self.Root = BSTNode(key, val, None)
         else:
-            nodeinf = self.FindNodeByKey(key)
+            nodeinf = BSTFind().do(key, self.Root)
             if nodeinf[1] == False:
                 if nodeinf[2] == True:  # Добавляем левым потомком
                     nodeinf[0].LeftChild = BSTNode(key, val, nodeinf[0])
