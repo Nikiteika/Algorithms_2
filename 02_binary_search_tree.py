@@ -10,20 +10,14 @@ class BSTNode:
 
 class BSTFind:  # промежуточный результат поиска
 
-    def __init__(self):
-        self.Node = None  # None если
-        # в дереве вообще нету узлов
+    def __init__(self, reqkey, elem):
+        self.Node = None  # None если в дереве вообще нету узлов
         self.NodeHasKey = False  # True если узел найден
-        self.ToLeft = False  # True, если родительскому узлу надо
-        # добавить новый узел левым потомком
-
-    def do(self, reqkey, elem):  # в параметр "elem" нужно всегда подавать аргумент "self.root" дерева
-        # (если хотим провести поиск по всему дереву)
+        self.ToLeft = False  # True, если родительскому узлу надо добавить новый узел левым потомком
         while elem is not None:  # проверяем, не пустой ли корень + совершается столько циклов, сколько нужно
             if elem.NodeKey == reqkey:
                 self.Node = elem
                 self.NodeHasKey = True
-                return [self.Node, self.NodeHasKey, self.ToLeft]
             elif elem.NodeKey < reqkey:
                 if elem.RightChild is not None:
                     elem = elem.RightChild
@@ -31,7 +25,6 @@ class BSTFind:  # промежуточный результат поиска
                     self.Node = elem
                     self.NodeHasKey = False
                     self.ToLeft = False
-                    return [self.Node, self.NodeHasKey, self.ToLeft]
             elif elem.NodeKey > reqkey:
                 if elem.LeftChild is not None:
                     elem = elem.LeftChild
@@ -39,10 +32,6 @@ class BSTFind:  # промежуточный результат поиска
                     self.Node = elem
                     self.NodeHasKey = False
                     self.ToLeft = True
-                    return [self.Node, self.NodeHasKey, self.ToLeft]
-        else:
-            return [self.Node, self.NodeHasKey, self.ToLeft]
-
 
 class BST:
 
@@ -51,23 +40,20 @@ class BST:
 
     def FindNodeByKey(self, key):
         # ищем в дереве узел и сопутствующую информацию по ключу
-        node = BSTFind().do(key, self.Root)
-        if node[1] == True:
-            return node[0]
-        else:
-            return   # возвращает BSTFind
+        node = BSTFind(key, self.Root)
+        return node  # возвращает BSTFind
 
     def AddKeyValue(self, key, val):
         # добавляем ключ-значение в дерево
         if self.Root is None:
             self.Root = BSTNode(key, val, None)
         else:
-            nodeinf = BSTFind().do(key, self.Root)
-            if nodeinf[1] == False:
-                if nodeinf[2] == True:  # Добавляем левым потомком
-                    nodeinf[0].LeftChild = BSTNode(key, val, nodeinf[0])
-                else:  # nodeinf[2] == False: Добавляем правым потомком
-                    nodeinf[0].RightChild = BSTNode(key, val, nodeinf[0])
+            nodeinf = self.FindNodeByKey(key)
+            if nodeinf.NodeHasKey == False:
+                if nodeinf.ToLeft == True:  # Добавляем левым потомком
+                    nodeinf.Node.LeftChild = BSTNode(key, val, nodeinf.Node)
+                else:  # nodeinf.ToLeft == False: Добавляем правым потомком
+                    nodeinf.Node.RightChild = BSTNode(key, val, nodeinf.Node)
                 return True
             else:
                 return False  # если ключ уже есть
@@ -89,27 +75,27 @@ class BST:
         # ищем максимальное/минимальное (узел) в поддереве
 
     def DeleteNodeByKey(self, key):
-        nodeinf = BSTFind().do(key, self.Root)
-        if nodeinf[1] == True:
-            if nodeinf[0] == self.Root:
-                if nodeinf[0].RightChild is None:
+        nodeinf = self.FindNodeByKey(key)
+        if nodeinf.NodeHasKey == True:
+            if nodeinf.Node == self.Root:
+                if nodeinf.Node.RightChild is None:
                     self.Root = None
-                else:  # nodeinf[0].RightChild is not None:
-                    preemnik = nodeinf[0].RightChild
+                else:  # nodeinf.Node.RightChild is not None:
+                    preemnik = nodeinf.Node.RightChild
                     while preemnik.LeftChild is not None:
                         preemnik = preemnik.LeftChild
                     preemnik.Parent = None
                     self.Root = preemnik
             else:
-                roditel = nodeinf[0].Parent
-                if nodeinf[0].RightChild is None:
+                roditel = nodeinf.Node.Parent
+                if nodeinf.Node.RightChild is None:
                     preemnik = None
                 else:  # nodeinf[0].RightChild is not None:
-                    preemnik = nodeinf[0].RightChild
+                    preemnik = nodeinf.Node.RightChild
                     while preemnik.LeftChild is not None:
                         preemnik = preemnik.LeftChild
                     preemnik.Parent = roditel
-                if roditel.LeftChild.NodeKey == nodeinf[0].NodeKey:
+                if roditel.LeftChild == nodeinf.Node:
                     roditel.LeftChild = preemnik
                 else:
                     roditel.RightChild = preemnik
