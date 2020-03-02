@@ -18,6 +18,7 @@ class BSTFind:  # промежуточный результат поиска
             if elem.NodeKey == reqkey:
                 self.Node = elem
                 self.NodeHasKey = True
+                break
             elif elem.NodeKey < reqkey:
                 if elem.RightChild is not None:
                     elem = elem.RightChild
@@ -25,6 +26,7 @@ class BSTFind:  # промежуточный результат поиска
                     self.Node = elem
                     self.NodeHasKey = False
                     self.ToLeft = False
+                    break
             elif elem.NodeKey > reqkey:
                 if elem.LeftChild is not None:
                     elem = elem.LeftChild
@@ -32,6 +34,7 @@ class BSTFind:  # промежуточный результат поиска
                     self.Node = elem
                     self.NodeHasKey = False
                     self.ToLeft = True
+                    break
 
 class BST:
 
