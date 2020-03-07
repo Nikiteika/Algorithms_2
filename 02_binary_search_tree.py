@@ -78,8 +78,11 @@ class BST:
         # ищем максимальное/минимальное (узел) в поддереве
 
     def DeleteNodeByKey(self, key):
+
         nodeinf = self.FindNodeByKey(key)
+
         if nodeinf.NodeHasKey == True:
+
             if nodeinf.Node == self.Root:
                 if nodeinf.Node.RightChild is None:
                     self.Root = None
@@ -90,18 +93,97 @@ class BST:
                     preemnik.Parent = None
                     self.Root = preemnik
             else:
-                roditel = nodeinf.Node.Parent
-                if nodeinf.Node.RightChild is None:
-                    preemnik = None
-                else:  # nodeinf[0].RightChild is not None:
-                    preemnik = nodeinf.Node.RightChild
+                roddel = nodeinf.Node.Parent  # roddel - родитель удаляемого узла
+
+                if roddel.LeftChild == nodeinf.Node:  # левый или правый потомок - связь
+                    svyazleft = True
+                else:
+                    svyazleft = False
+
+                # Случаи, когда есть только левый потомок (у удаляемого узла), либо потомков нет совсем
+                if nodeinf.Node.RightChild is None:  # Тут можно добавить удаление Parent у удаляемого узла,
+                    # чтобы нельзя было вернуться к дереву из удалённого узла
+                    if nodeinf.Node.LeftChild is not None:
+                        preemnik = nodeinf.Node.LeftChild
+                        preemnik.Parent = roddel
+                        if svyazleft:
+                            roddel.LeftChild = preemnik
+                        else:
+                            roddel.RightChild = preemnik
+                    else:
+                        if svyazleft:
+                            roddel.LeftChild = None
+                        else:
+                            roddel.RightChild = None
+                
+                # Случай, когда у удаляемого узла есть правый потомок (левый либо есть либо нет)
+                else:  # nodeinf.Node.RightChild is not None:
+                    preemnik = nodeinf.Node.RightChild  # preemnik - узел, который встанет вместо удаляемого
                     while preemnik.LeftChild is not None:
                         preemnik = preemnik.LeftChild
-                    preemnik.Parent = roditel
-                if roditel.LeftChild == nodeinf.Node:
-                    roditel.LeftChild = preemnik
-                else:
-                    roditel.RightChild = preemnik
+
+                    # Если у преемника нет правого потомка, значит потомков НЕТ совсем
+                    if preemnik.RightChild is None:
+                        if nodeinf.Node.LeftChild is not None:
+                            preemnik.LeftChild = nodeinf.Node.LeftChild
+                            nodeinf.Node.LeftChild.Parent = preemnik
+                        # Если родитель преемника = удаляемому узлу, значит преемник - правый потомок удаляемого
+                        # в противном случае преемнику нужно присвоить правым потомком потомка удаляемого узла
+                        if preemnik.Parent != nodeinf.Node:
+                            # nodeinf.Node.RightChild is not None - проверено выше
+                            preemnik.RightChild = nodeinf.Node.RightChild
+                            nodeinf.Node.RightChild.Parent = preemnik
+                        preemnik.Parent = roddel
+                        if svyazleft:
+                            roddel.LeftChild = preemnik
+                        else:
+                            roddel.RightChild = preemnik
+                    else:  # preemnik.RightChild is not None:
+                        if preemnik.Parent == nodeinf.Node:
+                            if nodeinf.Node.LeftChild is not None:
+                                preemnik.LeftChild = nodeinf.Node.LeftChild
+                                nodeinf.Node.LeftChild.Parent = preemnik
+                            preemnik.Parent = roddel
+                            if svyazleft:
+                                roddel.LeftChild = preemnik
+                            else:
+                                roddel.RightChild = preemnik
+                        else:  # preemnik.Parent != nodeinf.Node:
+                            rodpreem = preemnik.Parent
+                            naslednik = preemnik.RightChild
+                            rodpreem.LeftChild = naslednik
+                            naslednik.Parent = rodpreem
+                            
+                            if nodeinf.Node.LeftChild is not None:
+                                preemnik.LeftChild = nodeinf.Node.LeftChild
+                                nodeinf.Node.LeftChild.Parent = preemnik
+                            preemnik.RightChild = nodeinf.Node.RightChild
+                            nodeinf.Node.RightChild.Parent = preemnik
+                            preemnik.Parent = roddel
+                            if svyazleft:
+                                roddel.LeftChild = preemnik
+                            else:
+                                roddel.RightChild = preemnik
+
+
+
+
+
+                    if
+
+                    if preemnik.RightChild is not None:
+                        naslednik = preemnik.RightChild  # naslednik - узел, который встанет вместо preemnik'а
+
+                preemnik.Parent = roddel
+                roddel.LeftChild = preemnik
+                roddel.RightChild = preemnik
+
+
+
+
+
+
+
             return True
         else:
             return False  # если узел не найден
