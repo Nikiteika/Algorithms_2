@@ -50,6 +50,7 @@ class BST:
         # добавляем ключ-значение в дерево
         if self.Root is None:
             self.Root = BSTNode(key, val, None)
+            return True
         else:
             nodeinf = self.FindNodeByKey(key)
             if nodeinf.NodeHasKey == False:
