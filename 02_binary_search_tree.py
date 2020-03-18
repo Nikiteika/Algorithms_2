@@ -196,12 +196,11 @@ class BST:
         # удаляем узел по ключу
 
     def Count(self):
+        spisok = []
         if self.Root is not None:
-            spisok = [self.Root]
+            spisok.append(self.Root)
             for elem in spisok:
                 for child in (elem.LeftChild, elem.RightChild):
                     if child is not None:
                         spisok.append(child)
-            return len(spisok)
-        else:
-            return 0  # количество узлов в дереве
+        return len(spisok) # количество узлов в дереве
