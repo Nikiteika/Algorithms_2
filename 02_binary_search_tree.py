@@ -36,6 +36,7 @@ class BSTFind:  # промежуточный результат поиска
                     self.ToLeft = True
                     break
 
+
 class BST:
 
     def __init__(self, node):
@@ -201,10 +202,10 @@ class BST:
         if x is not None:
             spisok.append(x)
             while spisok:
-                for elem in spisok:
-                    for child in (elem.LeftChild, elem.RightChild):
-                        if child is not None:
-                            spisok.append(child)
-                    spisok.remove(elem)
-                    k += 1
+                elem = spisok[0]
+                for child in (elem.LeftChild, elem.RightChild):
+                    if child is not None:
+                        spisok.append(child)
+                spisok.pop(0)
+                k += 1
         return k  # количество узлов в дереве
