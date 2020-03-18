@@ -197,28 +197,24 @@ class BST:
 
     def Count(self):
         spisok = []
-        x = self.Root
-        k = 0
-        if x is not None:
-            spisok.append(x)
-            while spisok:
-                elem = spisok[0]
+        if self.Root is not None:
+            spisok.append(self.Root)
+            for elem in spisok:
                 for child in (elem.LeftChild, elem.RightChild):
                     if child is not None:
                         spisok.append(child)
-                spisok.pop(0)
-                k += 1
-        return k  # количество узлов в дереве
+        return len(spisok) # количество узлов в дереве
 
     def WideAllNodes(self):
-        spisok = []
         if self.Root is not None:
-            spisok.append(self.Root)
+            spisok = [self.Root]
             for el in spisok:
                 for child in (el.LeftChild, el.RightChild):
                     if child is not None:
                         spisok.append(child)
-        return tuple(spisok)
+            return tuple(spisok)
+        else:
+            return tuple()
 
     def DeepAllNodes(self, poryadok):
 
