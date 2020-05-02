@@ -14,9 +14,7 @@ class BalancedBST:
         self.Root = None  # корень дерева
 
     def GenerateTree(self, a):
-
-        # self.Root.Level = 1
-
+        
         def createSubTree(roditel, arr):
             if arr:
                 node = BSTNode(arr[len(arr) // 2], roditel)
