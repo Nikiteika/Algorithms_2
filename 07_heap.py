@@ -5,7 +5,6 @@ class Heap:
 
     def MakeHeap(self, a, depth):
         self.HeapArray = [None] * (2 ** (depth + 1) - 1)
-        a.sort(reverse=True)
         for i in range(min(len(a), (2 ** (depth + 1) - 1))):
             self.Add(a[i])
         # создаём массив кучи HeapArray из заданного
