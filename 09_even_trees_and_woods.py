@@ -137,9 +137,21 @@ class SimpleTree:
         if self.Count() % 2 == 1:
             return []
         else:
+            result = []
             
-            
-            
-            
-            pass
-        return []
+            def countNodes(root):
+                nonlocal result
+                nodes = 1
+                for child in root.Children:
+                    subtree_length = countNodes(child)
+                    nodes += subtree_length
+                if not root.Children:
+                    return 1
+                if nodes % 2 == 0:
+                    if root.Parent:
+                        result.append(root.Parent)
+                        result.append(root)
+                    return 0
+                return nodes
+            countNodes(self.Root)
+            return result
