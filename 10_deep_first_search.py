@@ -1,3 +1,18 @@
+class Stack:
+    def __init__(self):
+        self.stack = []
+
+    def pop(self):
+        if len(self.stack) > 0:
+            return self.stack.pop()
+        else:
+            return None
+
+    def push(self, value):
+        self.stack.append(value)
+        return
+
+
 class Vertex:
 
     def __init__(self, val):
@@ -60,7 +75,35 @@ class SimpleGraph:
         # удаление ребра между вершинами v1 и v2
 
     def DepthFirstSearch(self, VFrom, VTo):
-        pass
+        stack = Stack()
+        for elem in self.vertex:  # Убираем Hit в каждом узле
+            if elem is None:
+                pass
+            else:
+                elem.Hit = False
+
+        def step(VOt, VDo):
+            nonlocal stack
+            x = self.vertex[VOt]
+            x.Hit = True
+            stack.push(x)
+            for i in range(self.max_vertex):
+                if self.m_adjacency[VOt][i] == 1:
+                    if self.vertex[i] == self.vertex[VDo]:
+                        stack.push(self.vertex[i])
+                        return stack
+
+            for i in range(self.max_vertex):
+                if self.m_adjacency[VFrom][i] == 1:
+                    if not self.vertex[i].Hit:
+                        step(i, VDo)
+            
+            stack.pop()
+            if len(stack.stack) == 0:
+                return []
+            else:
+                step(stack.pop(), VDo)
+        return step(VFrom, VTo)
 # узлы задаются позициями в списке vertex
 # возвращается список узлов -- путь из VFrom в VTo
 # или [] если пути нету
