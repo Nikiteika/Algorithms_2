@@ -92,7 +92,7 @@ class SimpleGraph:
                     else:
                         step(self.vertex[i], VDo)
             st.pop()
-            return
+            return st
 
         return step(VFrom, VTo)
 # узлы задаются позициями в списке vertex
