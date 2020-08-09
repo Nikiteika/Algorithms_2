@@ -75,34 +75,23 @@ class SimpleGraph:
         # удаление ребра между вершинами v1 и v2
 
     def DepthFirstSearch(self, VFrom, VTo):
-        stack = Stack()
+        st = Stack()
         for elem in self.vertex:  # Убираем Hit в каждом узле
-            if elem is None:
-                pass
-            else:
+            if elem is not None:
                 elem.Hit = False
 
         def step(VOt, VDo):
-            nonlocal stack
-            x = self.vertex[VOt]
-            x.Hit = True
-            stack.push(x)
+            nonlocal st
+            self.vertex[VOt].Hit = True
+            st.push(self.vertex[VOt])
             for i in range(self.max_vertex):
-                if self.m_adjacency[VOt][i] == 1:
+                if self.m_adjacency[VOt][i] == 1 and self.vertex[i].Hit == False:
                     if self.vertex[i] == self.vertex[VDo]:
-                        stack.push(self.vertex[i])
-                        return stack
-
-            for i in range(self.max_vertex):
-                if self.m_adjacency[VFrom][i] == 1:
-                    if not self.vertex[i].Hit:
-                        step(i, VDo)
-            
-            stack.pop()
-            if len(stack.stack) == 0:
-                return []
-            else:
-                step(stack.pop(), VDo)
+                        st.push(self.vertex[i])
+                        return st
+                    else:
+                        step()
+        
         return step(VFrom, VTo)
 # узлы задаются позициями в списке vertex
 # возвращается список узлов -- путь из VFrom в VTo
