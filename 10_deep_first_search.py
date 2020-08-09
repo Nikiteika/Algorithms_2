@@ -91,7 +91,9 @@ class SimpleGraph:
                         return st
                     else:
                         step()
-        
+            st.pop()
+            return
+
         return step(VFrom, VTo)
 # узлы задаются позициями в списке vertex
 # возвращается список узлов -- путь из VFrom в VTo
