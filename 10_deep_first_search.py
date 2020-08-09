@@ -90,7 +90,7 @@ class SimpleGraph:
                         st.push(self.vertex[i])
                         return st
                     else:
-                        step()
+                        step(self.vertex[i], VDo)
             st.pop()
             return
 
