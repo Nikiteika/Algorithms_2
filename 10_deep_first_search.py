@@ -79,7 +79,6 @@ class SimpleGraph:
 
     def DepthFirstSearch(self, VFrom, VTo):
         st = Stack()
-        res = []
         for elem in self.vertex:  # Убираем Hit в каждом узле
             if elem is not None:
                 elem.Hit = False
@@ -95,12 +94,28 @@ class SimpleGraph:
                         return st.stack
                     else:
                         step(i, VDo)
-                        if st.stack[len(st.stack) - 1] == self.vertex[VDo]:
+                        if st.stack[-1] == self.vertex[VDo]:
                             return st.stack
             st.pop()
             return st.stack
 
+        # def dfs(Vn, Vk):  # Более быстрый и компактный код, но не трушный поиск в глубину
+        #     nonlocal st
+        #     self.vertex[Vn].Hit = True
+        #     st.push(self.vertex[Vn])
+        #     if self.m_adjacency[Vn][Vk] == 1:  # Из-за вот этой проверки
+        #         st.push(self.vertex[Vk])
+        #         return st.stack
+        #     else:
+        #         for i in range(self.max_vertex):
+        #             if self.m_adjacency[Vn][i] == 1 and self.vertex[i].Hit is False:
+        #                 dfs(i, Vk)
+        #                 if st.stack[-1] == self.vertex[Vk]:
+        #                     return st.stack
+        #     st.pop()
+        #     return st.stack
+
         return step(VFrom, VTo)
 # узлы задаются позициями в списке vertex
 # возвращается список узлов -- путь из VFrom в VTo
-# или [] если пути
+# или [] если пути нет
