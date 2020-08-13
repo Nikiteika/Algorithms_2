@@ -2,6 +2,9 @@ class Stack:
     def __init__(self):
         self.stack = []
 
+    def size(self):
+        return len(self.stack)
+
     def pop(self):
         if len(self.stack) > 0:
             return self.stack.pop()
@@ -76,6 +79,7 @@ class SimpleGraph:
 
     def DepthFirstSearch(self, VFrom, VTo):
         st = Stack()
+        res = []
         for elem in self.vertex:  # Убираем Hit в каждом узле
             if elem is not None:
                 elem.Hit = False
@@ -88,13 +92,15 @@ class SimpleGraph:
                 if self.m_adjacency[VOt][i] == 1 and self.vertex[i].Hit == False:
                     if self.vertex[i] == self.vertex[VDo]:
                         st.push(self.vertex[i])
-                        return st
+                        return st.stack
                     else:
-                        step(self.vertex[i], VDo)
+                        step(i, VDo)
+                        if st.stack[len(st.stack) - 1] == self.vertex[VDo]:
+                            return st.stack
             st.pop()
-            return st
+            return st.stack
 
         return step(VFrom, VTo)
 # узлы задаются позициями в списке vertex
 # возвращается список узлов -- путь из VFrom в VTo
-# или [] если пути нету
+# или [] если пути
