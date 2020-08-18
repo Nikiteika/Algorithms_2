@@ -119,20 +119,3 @@ class SimpleGraph:
 # узлы задаются позициями в списке vertex
 # возвращается список узлов -- путь из VFrom в VTo
 # или [] если пути нет
-
-
-s = SimpleGraph(8)
-for i in range(7):
-    s.AddVertex(i)
-s.AddEdge(0, 1)
-s.AddEdge(0, 2)
-s.AddEdge(0, 6)
-s.AddEdge(2, 3)
-s.AddEdge(1, 3)
-s.AddEdge(1, 5)
-s.AddEdge(6, 5)
-s.AddEdge(5, 4)
-s.AddEdge(3, 4)
-# for i in range(s.max_vertex):
-#     print(s.m_adjacency[i])
-print(s.DepthFirstSearch(0, 6))
