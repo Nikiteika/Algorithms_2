@@ -115,6 +115,8 @@ class SimpleGraph:
         #     st.pop()
         #     return st.stack
 
+        if VFrom == VTo:
+            return [self.vertex[VTo]]
         return step(VFrom, VTo)
 # узлы задаются позициями в списке vertex
 # возвращается список узлов -- путь из VFrom в VTo
